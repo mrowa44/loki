@@ -170,6 +170,7 @@ function createChromeDockerTarget({
         await waitOnCDPAvailable(host, port);
       } catch (error) {
         if (error.message === 'Timeout' && errorLogs.length !== 0) {
+          console.log(error, errorLogs);
           throw new ChromeError(
             `Chrome failed to start with ${
               errorLogs.length === 1 ? 'error' : 'errors'
