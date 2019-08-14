@@ -32,6 +32,7 @@ const getLocalIPAddress = () => {
 
 const waitOnCDPAvailable = (host, port) =>
   new Promise((resolve, reject) => {
+    debug(`waitOnCDPAvailable ${host} ${port}`);
     waitOn(
       {
         resources: [`tcp:${host}:${port}`],
@@ -167,11 +168,11 @@ function createChromeDockerTarget({
 
       host = await getNetworkHost(execute, dockerId);
       try {
-        console.log('waitOnCDPAvailable', { host, port, dockerPath, dockerId });
+        debug('waitOnCDPAvailable', { host, port, dockerPath, dockerId });
         await waitOnCDPAvailable(host, port);
       } catch (error) {
         if (error.message === 'Timeout' && errorLogs.length !== 0) {
-          console.log('fail', error, errorLogs);
+          debug('fail', error, errorLogs);
           throw new ChromeError(
             `Chrome failed to start with ${
               errorLogs.length === 1 ? 'error' : 'errors'
